@@ -1,0 +1,28 @@
+@page "/player"
+@attribute [Authorize]
+@inject NavigationManager Navigation
+
+<PageTitle>Player</PageTitle>
+<h1>Player</h1>
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    protected async override void OnInitialized()
+    {
+        var authState = await authenticationState;
+
+        var user = authState.User;
+        Console.WriteLine(user);
+        if (!user.Identity.IsAuthenticated)
+        {
+            // Se o usuário não estiver autenticado, redirecione para a página de login
+            Navigation.NavigateTo("/login");
+        }
+        else if (!user.HasClaim(c => c.Type == "PermissaoRequerida"))
+        {
+            // Se o usuário não tiver a permissão necessária, redirecione para uma página de acesso negado
+            Navigation.NavigateTo("/acesso-negado");
+        }
+    }
+}

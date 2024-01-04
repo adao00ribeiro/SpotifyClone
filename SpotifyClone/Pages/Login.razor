@@ -1,0 +1,17 @@
+@page "/login"
+@inject ISpotifyService service;
+<PageTitle>Login</PageTitle>
+<div class="containerLogin">
+    <div class="base flex flex-center">
+        <img src="/images/spotify-logo-inicio.png" alt="">
+        <button @onclick=@OnChangeOpenSpotify>
+            Abrir meu Spotify
+        </button>
+    </div>
+</div>
+@code {
+    public void OnChangeOpenSpotify()
+    {
+        Console.WriteLine(service.obterUrlLogin());
+    }
+}
