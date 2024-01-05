@@ -1,18 +1,23 @@
 using SpotifyAPI.Web;
-using SpotifyClone.Models;
 using SpotifyClone.Services.Interfaces;
 
 namespace SpotifyClone.Services;
 
 public class SpotifyService : ISpotifyService
 {
-    private readonly IConfiguration _configuration;
-    private SpotifyClient spotifyApi;
-    private User user;
 
-    public SpotifyService(IConfiguration configuration)
+    public readonly string authEndPoint;
+    public readonly string clientId;
+    public readonly string redirectUrl;
+    public readonly string[] scopes;
+    public SpotifyClient SpotifyClient;
+    public SpotifyService(string authEndPoint, string clientId, string redirectUrl, string[] scopes)
     {
-        _configuration = configuration;
+
+        this.authEndPoint = authEndPoint;
+        this.clientId = clientId;
+        this.redirectUrl = redirectUrl;
+        this.scopes = scopes;
     }
 
     public void inicializarUsuario()
@@ -22,30 +27,45 @@ public class SpotifyService : ISpotifyService
 
     public void obterSpotifyUsuario()
     {
-
+       
     }
 
-    public string obterUrlLogin()
+    public string GetUrlLogin()
     {
-        /*
-        const authEndpoint = `${SpotifyConfiguration.authEndpoint}?`;
-        const clientId = `client_id=${SpotifyConfiguration.clientId}&`;
-        const redirectUrl = `redirect_uri=${SpotifyConfiguration.redirectUrl}&`;
-        const scopes = `scope=${SpotifyConfiguration.scopes.join('%20')}&`;
-        const responseType = `response_type=token&show_dialog=true`;
-        return authEndpoint + clientId + redirectUrl + scopes + responseType; 
-      */
-        return _configuration["SpotifyConfiguration:authEndPoint"];
+        var tempauthEndpoint = $"{authEndPoint}?";
+        var tempclientId = $"client_id={clientId}&";
+        var tempredirectUrl = $"redirect_uri={redirectUrl}&";
+        string tempScopes = $"scope={string.Join("%20", scopes)}&";
+        var tempresponseType = "response_type=token&show_dialog=true";
+        return tempauthEndpoint + tempclientId + tempredirectUrl + tempScopes + tempresponseType;
+       
     }
 
-    public void obterTokenUrlCallback()
+    public string GetTokenUrlCallback(string url)
     {
+        // Criar um objeto Uri com a URL
+        Uri uri = new Uri(url);
+        var maxLen = Math.Min(1, uri.Fragment.Length);
+        Dictionary<string, string> fragmentParams = uri.Fragment.Substring(maxLen)?
+          .Split("&", StringSplitOptions.RemoveEmptyEntries)?
+          .Select(param => param.Split("=", StringSplitOptions.RemoveEmptyEntries))?
+          .ToDictionary(param => param[0], param => param[1]) ?? new Dictionary<string, string>();
 
+        var _isAuthed = fragmentParams.ContainsKey("access_token");
+        if (_isAuthed)
+        {
+            return fragmentParams["access_token"];
+        }
+        return "";
     }
 
-    public void definirAccessToken(string token)
+    public async Task DefineAccessToken(string token)
     {
-
+        if (token == null)
+        {
+            return;
+        }
+        SpotifyClient = new SpotifyClient(token);
     }
 
 

@@ -1,5 +1,7 @@
 @page "/login"
-@inject ISpotifyService service;
+@inject ISpotifyService SpotifyService;
+@inject NavigationManager NavigationManager;
+@inject IManagerSpotifyLocalStorageService SpotifylocalStorage;
 <PageTitle>Login</PageTitle>
 <div class="containerLogin">
     <div class="base flex flex-center">
@@ -10,8 +12,25 @@
     </div>
 </div>
 @code {
+
+
+    protected override void OnInitialized()
+    {
+        var token = SpotifyService.GetTokenUrlCallback(NavigationManager.Uri);
+        if (!string.IsNullOrEmpty(token))
+        {
+            SpotifyService.DefineAccessToken(token);
+            SpotifylocalStorage.SaveToken(token);
+            NavigationManager.NavigateTo("/player");
+        }
+    }
+
+    public void CheckTokenUrlCallback()
+    {
+
+    }
     public void OnChangeOpenSpotify()
     {
-        Console.WriteLine(service.obterUrlLogin());
+        NavigationManager.NavigateTo(SpotifyService.GetUrlLogin());
     }
 }

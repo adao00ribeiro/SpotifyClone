@@ -7,5 +7,8 @@ namespace SpotifyClone.Services.Interfaces;
 
 public interface ISpotifyService
 {
-    string obterUrlLogin();
+    
+    string GetUrlLogin();
+    string GetTokenUrlCallback(string url);
+    Task DefineAccessToken(string token);
 }
