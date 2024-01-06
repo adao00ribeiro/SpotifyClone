@@ -24,7 +24,7 @@
 
         if (!string.IsNullOrEmpty(token))
         {
-            await SpotifyService.DefineAccessToken(token);
+          await SpotifyService.DefineAccessToken(token);
           UserSession userSession = new UserSession();
           userSession.Token = token;
           userSession.ExpiresIn = 30;
@@ -32,6 +32,8 @@
           userSession.Role = "admin";
          await SpotifylocalStorage.SaveUserSession(userSession);
          await (provider as CustomAuthenticationStateProvider).UpdateAuthenticationState(userSession);
+            
+            
             NavigationManager.NavigateTo("/player");
         }
     }
