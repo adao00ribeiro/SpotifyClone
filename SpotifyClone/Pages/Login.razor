@@ -2,6 +2,7 @@
 @inject ISpotifyService SpotifyService;
 @inject NavigationManager NavigationManager;
 @inject IManagerSpotifyLocalStorageService SpotifylocalStorage;
+@inject AuthenticationStateProvider provider;
 <PageTitle>Login</PageTitle>
 <div class="containerLogin">
     <div class="base flex flex-center">
@@ -12,19 +13,32 @@
     </div>
 </div>
 @code {
-
-
-    protected override void OnInitialized()
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAuthenticationState();
+    }
+   private async Task LoadAuthenticationState()
     {
         var token = SpotifyService.GetTokenUrlCallback(NavigationManager.Uri);
+
         if (!string.IsNullOrEmpty(token))
         {
-            SpotifyService.DefineAccessToken(token);
-            SpotifylocalStorage.SaveToken(token);
+            await SpotifyService.DefineAccessToken(token);
+          UserSession userSession = new UserSession();
+          userSession.Token = token;
+          userSession.ExpiresIn = 30;
+          userSession.UserName = "adao";
+          userSession.Role = "admin";
+         await SpotifylocalStorage.SaveUserSession(userSession);
+         await (provider as CustomAuthenticationStateProvider).UpdateAuthenticationState(userSession);
             NavigationManager.NavigateTo("/player");
         }
     }
-
+      protected override async Task OnParametersSetAsync()
+    {
+        await LoadAuthenticationState();
+    }
     public void CheckTokenUrlCallback()
     {
 

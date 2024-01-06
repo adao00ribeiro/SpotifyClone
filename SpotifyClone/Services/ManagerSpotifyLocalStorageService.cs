@@ -1,11 +1,12 @@
 using Blazored.LocalStorage;
+using SpotifyClone.Autenticacao;
 using SpotifyClone.Services.Interfaces;
 
 namespace SpotifyClone.Services;
 
 public class ManagerSpotifyLocalStorageService : IManagerSpotifyLocalStorageService
 {
-    const string key = "tokenspotify";
+    const string key = "UserSession";
 
     private readonly ILocalStorageService localStorageService;
 
@@ -14,19 +15,19 @@ public class ManagerSpotifyLocalStorageService : IManagerSpotifyLocalStorageServ
         this.localStorageService = localStorageService;
     }
 
-    public async Task<string> GetToken()
+    public async Task<UserSession> GetUserSession()
     {
-        return await this.localStorageService.GetItemAsync<string>(key);
+        return await this.localStorageService.GetItemAsync<UserSession>(key);
 
     }
-    public async Task RemoveToken()
+    public async Task RemoveUserSession()
     {
         await this.localStorageService.RemoveItemAsync(key);
     }
 
-    public async Task SaveToken(string token)
+    public async Task SaveUserSession(UserSession session)
     {
-        await this.localStorageService.SetItemAsync(key, token);
+        await this.localStorageService.SetItemAsync(key, session);
     }
 
 }

@@ -1,0 +1,18 @@
+
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider _authStateProvider 
+@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
+
+<PageTitle>Redirecionamento</PageTitle>
+
+@code {
+     [CascadingParameter]
+    public Task<AuthenticationState> authenticationState { get; set; }
+    protected  override async void OnInitialized()
+    {
+    
+       NavigationManager.NavigateTo("/login");
+    }
+}
+
+

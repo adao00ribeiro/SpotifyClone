@@ -16,20 +16,24 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
+        
         try
         {
             var userSession = await _sessionStorage.GetItemAsync<UserSession>("UserSession");
-            if (userSession == null)
+           
+            if (userSession == null){
+        
                 return await Task.FromResult(new AuthenticationState(_anonymous));
+            }
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
             {
                 new Claim(ClaimTypes.Name, userSession.UserName),
                 new Claim(ClaimTypes.Role, userSession.Role)
-            }, "JwtAuth"));
-
+            }, "Spotify"));
+                
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
         }
-        catch
+        catch(Exception e)
         {
             return await Task.FromResult(new AuthenticationState(_anonymous));
         }
@@ -55,7 +59,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             await _sessionStorage.RemoveItemAsync("UserSession");
         }
 
-        NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claimsPrincipal)));
+        NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
     }
 
     public async Task<string> GetToken()

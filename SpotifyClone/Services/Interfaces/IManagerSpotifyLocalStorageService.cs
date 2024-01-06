@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SpotifyClone.Autenticacao;
 
 namespace SpotifyClone.Services.Interfaces;
 
 public interface IManagerSpotifyLocalStorageService
 {
-    Task<string> GetToken();
-    Task RemoveToken();
-    Task SaveToken(string token);
+    Task<UserSession> GetUserSession();
+    Task RemoveUserSession();
+    Task SaveUserSession(UserSession session);
 }

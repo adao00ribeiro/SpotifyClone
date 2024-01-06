@@ -1,23 +1,18 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using SpotifyAPI.Web;
+using SpotifyClone.Autenticacao;
 using SpotifyClone.Services.Interfaces;
 
 namespace SpotifyClone.Services;
 
 public class SpotifyService : ISpotifyService
 {
-
-    public readonly string authEndPoint;
-    public readonly string clientId;
-    public readonly string redirectUrl;
-    public readonly string[] scopes;
+   
+    private readonly IConfiguration configuration;
     public SpotifyClient SpotifyClient;
-    public SpotifyService(string authEndPoint, string clientId, string redirectUrl, string[] scopes)
-    {
-
-        this.authEndPoint = authEndPoint;
-        this.clientId = clientId;
-        this.redirectUrl = redirectUrl;
-        this.scopes = scopes;
+    public SpotifyService(IConfiguration _configuration){
+        
+        configuration = _configuration;
     }
 
     public void inicializarUsuario()
@@ -32,10 +27,10 @@ public class SpotifyService : ISpotifyService
 
     public string GetUrlLogin()
     {
-        var tempauthEndpoint = $"{authEndPoint}?";
-        var tempclientId = $"client_id={clientId}&";
-        var tempredirectUrl = $"redirect_uri={redirectUrl}&";
-        string tempScopes = $"scope={string.Join("%20", scopes)}&";
+        var tempauthEndpoint = $"{configuration["SpotifyConfiguration:authEndPoint"]}?";
+        var tempclientId = $"client_id={configuration["SpotifyConfiguration:clientId"]}&";
+        var tempredirectUrl = $"redirect_uri={configuration["SpotifyConfiguration:redirectUrl"]}&";
+        string tempScopes = $"scope={string.Join("%20", configuration.GetSection("SpotifyConfiguration:scopes").Get<string[]>())}&";
         var tempresponseType = "response_type=token&show_dialog=true";
         return tempauthEndpoint + tempclientId + tempredirectUrl + tempScopes + tempresponseType;
        
@@ -65,7 +60,8 @@ public class SpotifyService : ISpotifyService
         {
             return;
         }
-        SpotifyClient = new SpotifyClient(token);
+         SpotifyClient = new SpotifyClient(token);
+         
     }
 
 
