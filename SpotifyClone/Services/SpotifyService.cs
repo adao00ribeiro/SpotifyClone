@@ -1,15 +1,17 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using SpotifyAPI.Web;
 using SpotifyClone.Autenticacao;
+using SpotifyClone.Models;
 using SpotifyClone.Services.Interfaces;
 
 namespace SpotifyClone.Services;
 
 public class SpotifyService : ISpotifyService
 {
-   
     private readonly IConfiguration configuration;
     public SpotifyClient SpotifyClient;
+    private User user ;
+
     public SpotifyService(IConfiguration _configuration){
         
         configuration = _configuration;
@@ -64,5 +66,13 @@ public class SpotifyService : ISpotifyService
          
     }
 
+    public void Logout()
+    {
+        throw new NotImplementedException();
+    }
 
+    public User GetUser()
+    {
+        return user;
+    }
 }

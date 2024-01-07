@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
-
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 :root {
+
+
+
+
     --color-primary: #37AB00;
     --color-primary-hover: #42c903;
     --color-background-primary: #FBFEF4;
@@ -10,6 +14,16 @@
     --black-transparent-03: #00000008;
     --black-transparent-70: #000000b3;
     --branco: --color-background-second;
+
+
+
+
+    --h-spotify-logo: 120px;
+    --h-menu-opcoes: 150px;
+    --m-entre-menus: 10px;
+    --h-footer-user: 70px;
+    --h-desconsiderar: calc(var(--h-spotify-logo) + var(--h-menu-opcoes) + var(--h-footer-user));
+  
 }
 
 html,

@@ -1,23 +1,11 @@
 @page "/player"
 @attribute [Authorize]
-@inject NavigationManager Navigation
 
-<PageTitle>Player</PageTitle>
-<h1>Player</h1>
-<ArtistItemImage></ArtistItemImage>
+<div class="containerPalyer">
+    <PanelLeft></PanelLeft>
+    <div class="rotas-container"></div>
+</div>
+
 @code {
-    [CascadingParameter]
-    public Task<AuthenticationState> authenticationState { get; set; }
-    protected async override void OnInitialized()
-    {
-        var authState = await authenticationState;
 
-        var user = authState.User;
- 
-        if (!user.Identity.IsAuthenticated)
-        {
-           
-        }
-       
-    }
 }
