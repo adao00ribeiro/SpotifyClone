@@ -1,0 +1,76 @@
+
+
+
+.containerPanelLeft {
+  max-width: 300px;
+  min-height: 100vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-background-second);
+  box-shadow: 1px 0px 15px #00000012;
+}
+
+.containerPanelLeft .menus {
+  flex-grow: 1;
+  flex-direction: column;
+  height: 100%;
+  padding: 0px 40px 0px 40px;
+}
+
+.containerPanelLeft .menus .image-container {
+  min-height: var(--h-spotify-logo);
+}
+
+.containerPanelLeft .menus .image-container img {
+  width: 70%;
+}
+
+.containerPanelLeft .menus .menu-container {
+  width: 100%;
+}
+
+.containerPanelLeft .menus .menu-container.flex {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.containerPanelLeft .menus .menu-container.opcoes {
+  min-height: var(--h-menu-opcoes);
+}
+
+.containerPanelLeft .menus .menu-container.opcoes * {
+  margin-bottom: var(--m-entre-menus);
+}
+
+.containerPanelLeft .menus .menu-container .playlist-titulo {
+  margin: 10px 0px;
+  align-self: flex-start;
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: var(--black-transparent-30);
+}
+
+.containerPanelLeft .menus .menu-container .playlist-scroll {
+  width: 100%;
+  max-height: calc(95vh - var(--h-desconsiderar));
+  overflow-y: auto;
+}
+
+.containerPanelLeft .menus .menu-container .playlist-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.containerPanelLeft .menus .menu-container .playlist-scroll * {
+  margin-bottom: var(--m-entre-menus);
+}
+
+.containerPanelLeft .usuario-info {
+  flex-grow: 0;
+  display: block;
+  bottom: 0;
+  align-self: flex-end;
+  height: var(--h-footer-user);
+  width: 100%;
+}

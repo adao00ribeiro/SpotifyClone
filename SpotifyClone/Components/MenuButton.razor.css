@@ -1,0 +1,31 @@
+.containerMenuButton {
+    display: block;
+    width: 100%;
+  }
+  
+  .containerMenuButton button {
+    width: 100%;
+    border: 0;
+    padding: 10px 0px 10px 20px;
+    border-radius: 5px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    cursor: pointer;
+    color: var(--color-primary);
+    background-color: transparent;
+  }
+  
+  .containerMenuButton  span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 150px;
+    white-space: nowrap;
+    margin-left: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .containerMenuButton button.selecionado {
+    background-color: var(--color-primary);
+    color: var(--branco);
+  }

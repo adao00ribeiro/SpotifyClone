@@ -1,4 +1,88 @@
-<h1>Component</h1>
+@attribute [Authorize]
+@inject ISpotifyService SpotifyService
+
+<div class="containerPanelLeft">
+    <div class="menus flex">
+        <div class="image-container flex flex-center">
+            <img src="/images/spotify-logo.png" alt="" srcset="">
+        </div>
+        <div class="menu-container flex opcoes">
+            <MenuButton 
+            Descricao="Home"
+            Selecionado='@IsMenuSelected("Home")'
+            OnClickCallback ='(() => ButtonClick("Home"))'
+            > 
+                <i class="bi bi-house"></i>
+            </MenuButton>
+            <MenuButton 
+            Descricao="Pesquisar"
+             Selecionado='@IsMenuSelected("Pesquisar")'
+              OnClickCallback='(() => ButtonClick("Pesquisar"))'
+            >
+                <i class="bi bi-search"></i>
+            </MenuButton>
+            <MenuButton 
+            Descricao="Artistas"
+             Selecionado='@IsMenuSelected("Artistas")'
+              OnClickCallback='(() => ButtonClick("Artistas"))'
+            >
+                <i class="bi bi-person-arms-up"></i>
+            </MenuButton>
+        </div>
+
+        <div class="menu-container flex">
+            <span class="playlist-titulo">
+                PLAYLISTS
+            </span>
+
+            <div class="playlist-scroll">
+                @foreach (var item in playlists)
+                {
+                    <MenuButton Descricao=@item.Name>
+                        <i class="bi bi-music-note-beamed"></i>
+                    </MenuButton>
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="usuario-info">
+        <BaseBoardUser></BaseBoardUser>
+    </div>
+</div>
+
+
+
 @code {
+
+    public string menuSelecionado = "Home";
+
+    public Playlist[] playlists { get; set; } = [];
+
+    protected  override async void OnInitialized()
+    {
+        this.buscarPlaylists();
+    }
+
+    private void ButtonClick(string button)
+    {
+        this.menuSelecionado = button;
+        Console.WriteLine( this.menuSelecionado);
+    }
+
+    public void GoToPlaylist(string playlistId)
+    {
+        this.menuSelecionado = playlistId;
+        // this.router.navigateByUrl(`player/lista/playlist/${playlistId}`)
+    }
+
+    public async void buscarPlaylists()
+    {
+        //this.playlists = await this.spotifyService.buscarPlaylistUsuario();
+    }
+     private bool IsMenuSelected(string menuDescricao)
+    {
+        return menuSelecionado == menuDescricao;
+    }
 
 }
