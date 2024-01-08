@@ -1,4 +1,31 @@
-<h1>Component</h1>
+@inject ISpotifyService SpotifyService
+    <div class="card p-20">
+        <div class="artista flex">
+            <span class="titulo-bg">
+                {{ topArtista.nome }}
+            </span>
+        </div>
+        <div class="image" [style.background-image]="'url(' + topArtista.imagemUrl + ')'">
+        </div>
+    </div>
+
 @code {
+  public Artist topArtista ;
+
+      protected override  async void OnInitialized(){
+              await buscarArtista();
+    }
+
+  public async Task buscarArtista()
+  {
+  /*
+    var artists = await SpotifyService.buscarTopArtistas(1);
+    
+    if (artistas is not null)
+      this.topArtista = artists.pop();
+  */
+  }
+  
+
 
 }

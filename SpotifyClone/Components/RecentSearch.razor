@@ -1,4 +1,32 @@
-<h1>Component</h1>
+<div class="containerRecentSerach">
+  <input type="text" @bind="searchField" placeholder="Artists, Songs, Playlists" @onkeyup="Search" />
+  <div class="sugestoes flex">
+    @foreach (var item in recentSearches)
+    {
+      <span @onclick='(() => definiSearch(item))'>
+        @item
+      </span>
+    }
+  </div>
+</div>
+
 @code {
 
+  private string[] recentSearches = {
+"Top Brasil", "Top Global", "Esquenta Sertanejo",
+"Funk Hits", "Pagodeira"
+};
+  private string searchField = string.Empty;
+  public void definiSearch(string search)
+  {
+    this.searchField = search;
+  }
+  public void Search(KeyboardEventArgs e)
+  {
+     if (e.Key == "Enter")
+        {
+        Console.WriteLine("Buscando..."+ this.searchField);
+        }
+  
+  }
 }

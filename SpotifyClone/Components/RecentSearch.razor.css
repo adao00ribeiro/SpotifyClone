@@ -1,0 +1,43 @@
+.containerRecentSerach input {
+    width: 100%;
+    padding: 10px 5px;
+    border-radius: 8px;
+    border-color: var(--black-transparent-30);
+    outline: none;
+    color: var(--color-primary);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  
+  .containerRecentSerach input::placeholder {
+    color: var(--black-transparent-30);
+    font-size: .85rem;
+  }
+  
+  .containerRecentSerach input:focus,
+  .containerRecentSerach input:active {
+    border-color: var(--color-primary);
+    border-width: 2px;
+  }
+  
+  .containerRecentSerach .sugestoes {
+    flex-wrap: wrap;
+  }
+  
+  .containerRecentSerach .sugestoes span {
+    background-color: var(--branco);
+    margin-right: 5px;
+    padding: 5px 10px;
+    color: var(--black-transparent-70);
+    border: 1px solid var(--black-transparent-30);
+    margin-top: 10px;
+    font-size: .9rem;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+  
+  .containerRecentSerach .sugestoes span:hover {
+    background-color: rgba(var(--color-primary), .8);
+    color: var(--branco);
+  }
+  
