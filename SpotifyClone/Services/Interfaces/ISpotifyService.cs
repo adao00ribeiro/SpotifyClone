@@ -12,6 +12,11 @@ public interface ISpotifyService
     string GetUrlLogin();
     string GetTokenUrlCallback(string url);
     Task DefineAccessToken(string token);
-    void Logout();
+   
+    Task<bool> InitilizeUser();
     User GetUser();
+
+    Task<Playlist[]> SearchUserPlaylist(int offset , int limit = 50);
+
+     void Logout();
 }

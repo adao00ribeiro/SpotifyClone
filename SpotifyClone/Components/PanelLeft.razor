@@ -29,7 +29,6 @@
                 <i class="bi bi-person-arms-up"></i>
             </MenuButton>
         </div>
-
         <div class="menu-container flex">
             <span class="playlist-titulo">
                 PLAYLISTS
@@ -42,7 +41,6 @@
                         <i class="bi bi-music-note-beamed"></i>
                     </MenuButton>
                 }
-
             </div>
         </div>
     </div>
@@ -78,7 +76,7 @@
 
     public async void buscarPlaylists()
     {
-        //this.playlists = await this.spotifyService.buscarPlaylistUsuario();
+         await this.SpotifyService.SearchUserPlaylist(1,50);
     }
      private bool IsMenuSelected(string menuDescricao)
     {

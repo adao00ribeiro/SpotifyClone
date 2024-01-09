@@ -16,7 +16,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<IManagerSpotifyLocalStorageService, ManagerSpotifyLocalStorageService>();
 builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 
-
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
 builder.Services.AddAuthorizationCore();

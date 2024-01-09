@@ -1,7 +1,7 @@
 ﻿@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider _authStateProvider
-
+@inject ISpotifyService SpotifyService
 <CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync">
         <Found Context="routeData">
@@ -9,7 +9,6 @@
                 <NotAuthorized>
                     <!-- Conteúdo para exibir quando o usuário não tem permissão -->
                     <p role="alert">Você não tem permissão para acessar esta página.</p>
-                    <RedirectToLogin></RedirectToLogin>
                 </NotAuthorized>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -26,16 +25,32 @@
     private async Task OnNavigateAsync(NavigationContext args)
     {
 
-        var user = (await (_authStateProvider as CustomAuthenticationStateProvider)
-        .GetAuthenticationStateAsync()).User;
+
+        if (args.Path.Contains("/login", StringComparison.OrdinalIgnoreCase))
+        {
+            Console.WriteLine("aki login");
+            return;
+        }
+          Console.WriteLine("aki");
+        var authenticationState = await _authStateProvider.GetAuthenticationStateAsync();
+        var user = authenticationState.User;
         if (!user.Identity.IsAuthenticated)
         {
-            var session = await SpotifylocalStorage.GetUserSession();
-
-            await (_authStateProvider as CustomAuthenticationStateProvider).UpdateAuthenticationState(session);
-
-        }else{
-            Console.WriteLine("esta autenticado");
+            naoAutenticado();
         }
+        // Check if the destination page is the "player" page
+        if (args.Path.Contains("/player", StringComparison.OrdinalIgnoreCase))
+        {
+
+        }
+
+
+    }
+
+    public void naoAutenticado()
+    {
+        SpotifylocalStorage.RemoveUserSession();
+        // router.navigateByUrl('/login');
+        NavigationManager.NavigateTo("/login");
     }
 }

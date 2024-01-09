@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SpotifyAPI.Web;
 
 namespace SpotifyClone.Models;
 
@@ -15,5 +16,14 @@ public class User
         Id = id;
         Name = name;
         this.imageUrl = imageUrl;
+    }
+
+    internal static User PrivateUserConvertUser(PrivateUser userInfo)
+    {
+        return new User(
+            userInfo.Id,
+            userInfo.DisplayName,
+            userInfo.Uri
+        );
     }
 }
