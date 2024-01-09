@@ -1,14 +1,11 @@
-﻿@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
-@inject NavigationManager NavigationManager
-@inject AuthenticationStateProvider _authStateProvider
-@inject ISpotifyService SpotifyService
-<CascadingAuthenticationState>
-    <Router AppAssembly="@typeof(App).Assembly" OnNavigateAsync="OnNavigateAsync">
+﻿<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
                 <NotAuthorized>
                     <!-- Conteúdo para exibir quando o usuário não tem permissão -->
                     <p role="alert">Você não tem permissão para acessar esta página.</p>
+                    <RedirectToLogin></RedirectToLogin>
                 </NotAuthorized>
             </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
@@ -21,36 +18,3 @@
         </NotFound>
     </Router>
 </CascadingAuthenticationState>
-@code {
-    private async Task OnNavigateAsync(NavigationContext args)
-    {
-
-
-        if (args.Path.Contains("/login", StringComparison.OrdinalIgnoreCase))
-        {
-            Console.WriteLine("aki login");
-            return;
-        }
-          Console.WriteLine("aki");
-        var authenticationState = await _authStateProvider.GetAuthenticationStateAsync();
-        var user = authenticationState.User;
-        if (!user.Identity.IsAuthenticated)
-        {
-            naoAutenticado();
-        }
-        // Check if the destination page is the "player" page
-        if (args.Path.Contains("/player", StringComparison.OrdinalIgnoreCase))
-        {
-
-        }
-
-
-    }
-
-    public void naoAutenticado()
-    {
-        SpotifylocalStorage.RemoveUserSession();
-        // router.navigateByUrl('/login');
-        NavigationManager.NavigateTo("/login");
-    }
-}

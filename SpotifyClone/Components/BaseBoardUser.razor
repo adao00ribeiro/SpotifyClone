@@ -1,21 +1,21 @@
 @inject ISpotifyService SpotifyService
-@if(user is not null){
-<div class="containerBaseBoard flex">
-    <img src=@user.imageUrl alt="" srcset="">
-    <span>
-        @user.Name
-    </span>
-    <i class="bi bi-box-arrow-left"></i>
-</div>
+@if (user is not null)
+{
+    <div class="containerBaseBoard flex">
+        <img src=@user.imageUrl alt="" srcset="">
+        <span>
+            @user.Name
+        </span>
+        <i class="bi bi-box-arrow-left"></i>
+    </div>
 }
 
 @code {
-    public User user = new User("1", "Adão Ribeiro", "https://www.google.com/url?sa=i&url=http%3A%2F%2Fmataharie007.blogspot.com%2F2008%2F10%2Fo-homem-que-desafiou-o-diabo.html&psig=AOvVaw2_7I7izJzk7uVUQt4os8GB&ust=1704728319633000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCIiWrKnLy4MDFQAAAAAdAAAAABAD");
-
+    public User user = null;
 
     protected override void OnInitialized()
     {
-       // this.user = SpotifyService.GetUser();
+        this.user = SpotifyService.GetUser();
     }
 
     public void Logout()

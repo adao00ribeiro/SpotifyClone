@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Components.Authorization;
 using SpotifyAPI.Web;
-using SpotifyClone.Autenticacao;
 using SpotifyClone.Models;
 using SpotifyClone.Services.Interfaces;
 
@@ -10,7 +8,7 @@ public class SpotifyService : ISpotifyService
 {
     private readonly IConfiguration configuration;
     IManagerSpotifyLocalStorageService SpotifyLocalStorageService;
-    public SpotifyClient SpotifyClient;
+    private SpotifyClient SpotifyClient;
     private User user;
 
     public SpotifyService(IConfiguration _configuration, IManagerSpotifyLocalStorageService spotifyLocalStorageService)
@@ -26,6 +24,7 @@ public class SpotifyService : ISpotifyService
         {
             return true;
         }
+
         var session = await SpotifyLocalStorageService.GetUserSession();
 
         if (session is null)
@@ -36,7 +35,6 @@ public class SpotifyService : ISpotifyService
             await this.DefineAccessToken(session.Token);
             await this.GetSpotifyUser();
             return this.user is not null;
-
         }
         catch (Exception e)
         {
@@ -110,11 +108,11 @@ public class SpotifyService : ISpotifyService
 
             await foreach (var item in SpotifyClient.Paginate(page))
             {
-                Console.WriteLine("tracks" + item.Description);
 
+                ListPlaylist.Add(Playlist.FullPlaylistConvertPlaylist(item));
                 // you can use "break" here!
             }
-            return Array.Empty<Playlist>();
+            return ListPlaylist.ToArray();
         }
         catch (System.Exception e)
         {

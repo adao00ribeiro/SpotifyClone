@@ -1,11 +1,40 @@
 @page "/player"
 @attribute [Authorize]
+@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
+@inject AuthenticationStateProvider _authStateProvider
+@inject ISpotifyService SpotifyService
+@inject NavigationManager NavigationManager
 
 <div class="containerPlayer">
-    <PanelLeft></PanelLeft>
-    <PanelRight></PanelRight>
+
+    @if (usuarioCriado)
+    {
+        <PanelLeft></PanelLeft>
+        <PanelRight></PanelRight>
+    }
+    else
+    {
+        <p>Carregando...</p>
+    }
 </div>
 
 @code {
+    private bool usuarioCriado;
+    protected override async Task OnInitializedAsync()
+    {
+
+        usuarioCriado = await SpotifyService.InitilizeUser();
+        if (!usuarioCriado)
+        {
+            Console.WriteLine("redirecionando para o login");
+            naoAutenticado();
+        }
+    }
+
+    public void naoAutenticado()
+    {
+        SpotifylocalStorage.RemoveUserSession();
+        NavigationManager.NavigateTo("/login");
+    }
 
 }

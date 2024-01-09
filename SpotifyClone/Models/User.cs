@@ -23,7 +23,7 @@ public class User
         return new User(
             userInfo.Id,
             userInfo.DisplayName,
-            userInfo.Uri
+            userInfo.Images.FirstOrDefault().Url
         );
     }
 }
