@@ -18,6 +18,8 @@ builder.Services.AddScoped<ISpotifyService, SpotifyService>();
 
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 
+builder.Services.AddSingleton<AppDataService>();
+
 builder.Services.AddAuthorizationCore();
 
 await builder.Build().RunAsync();

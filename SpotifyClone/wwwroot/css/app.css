@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
 :root {
 
 
@@ -23,7 +24,7 @@
     --m-entre-menus: 10px;
     --h-footer-user: 70px;
     --h-desconsiderar: calc(var(--h-spotify-logo) + var(--h-menu-opcoes) + var(--h-footer-user));
-  
+
 }
 
 html,
@@ -36,6 +37,11 @@ body {
 * {
     font-family: 'Montserrat', sans-serif;
     box-sizing: border-box;
+}
+
+.MainLayout {
+    display: flex;
+    flex-direction: row;
 }
 
 .flex {

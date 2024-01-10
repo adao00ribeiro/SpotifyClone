@@ -1,3 +1,10 @@
 ﻿@inherits LayoutComponentBase
-
-@Body
+@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
+@inject AuthenticationStateProvider _authStateProvider
+@inject ISpotifyService SpotifyService
+@inject NavigationManager NavigationManager
+@inject AppDataService AppData
+<div class="MainLayout">
+    <PanelLeft></PanelLeft>
+    @Body
+</div>

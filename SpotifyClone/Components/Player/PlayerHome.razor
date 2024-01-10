@@ -1,12 +1,14 @@
-@page "/list/{type}/{Id}"
+<div class="containerPlayerHome">
+    <div class="minhas-musicas">
+        <span class="titulo-bg mt-4">
+            Seu Top Artista
+        </span>
 
-<PageTitle>playlist</PageTitle>
-<div class="containerPlaylist">
-    <div class="lista mt-4">
-        <Banner></Banner>
-        <div class="titulo-bg mt-7">
-            title
-        </div>
+        <TopArtist></TopArtist>
+
+        <span class="titulo-bg mt-4">
+            Musicas Curtidas
+        </span>
 
         <table class="table mt-3">
             <thead>
@@ -22,23 +24,7 @@
 
             </tbody>
         </table>
-
     </div>
     <PanelRight>
-
     </PanelRight>
 </div>
-@code {
-
-
-    [Parameter]
-    public string type { get; set; }
-    [Parameter]
-    public string Id { get; set; }
-    [Parameter]
-    public string Title { get; set; }
-    protected override void OnInitialized()
-    {
-
-    }
-}

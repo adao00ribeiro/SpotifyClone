@@ -4,37 +4,29 @@
 @inject AuthenticationStateProvider _authStateProvider
 @inject ISpotifyService SpotifyService
 @inject NavigationManager NavigationManager
+@inject AppDataService AppData;
 
-<div class="containerPlayer">
-
-    @if (usuarioCriado)
-    {
-        <PanelLeft></PanelLeft>
-        <PanelRight></PanelRight>
-    }
-    else
-    {
-        <p>Carregando...</p>
-    }
+<div class="containers">
+    <DynamicComponent Type=@GetSelectType() />
 </div>
 
 @code {
-    private bool usuarioCriado;
-    protected override async Task OnInitializedAsync()
-    {
 
-        usuarioCriado = await SpotifyService.InitilizeUser();
-        if (!usuarioCriado)
+    protected override void OnInitialized()
+    {
+        AppData.OnChange += StateHasChanged; ;
+    }
+    public Type GetSelectType()
+    {
+        Console.WriteLine(AppData.menuSelecionado);
+        if (AppData.menuSelecionado == "Search")
         {
-            Console.WriteLine("redirecionando para o login");
-            naoAutenticado();
+            return typeof(Search);
         }
+        if (AppData.menuSelecionado == "Artists")
+        {
+            return typeof(Artists);
+        }
+        return typeof(PlayerHome);
     }
-
-    public void naoAutenticado()
-    {
-        SpotifylocalStorage.RemoveUserSession();
-        NavigationManager.NavigateTo("/login");
-    }
-
 }

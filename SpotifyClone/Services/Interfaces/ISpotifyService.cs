@@ -14,5 +14,5 @@ public interface ISpotifyService
     Task<bool> InitilizeUser();
     User GetUser();
     Task<Playlist[]> SearchUserPlaylist(int offset, int limit = 50);
-    void Logout();
+    Task Logout();
 }

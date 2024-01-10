@@ -1,5 +1,5 @@
-@attribute [Authorize]
-
+@inject NavigationManager NavigationManager
+@inject AppDataService AppData
 
 <div class="containerPanelLeft">
     <div class="menus flex">
@@ -11,12 +11,12 @@
                 OnClickCallback='(() => ButtonClick("Home"))'>
                 <i class="bi bi-house"></i>
             </MenuButton>
-            <MenuButton Descricao="Pesquisar" Selecionado='@IsMenuSelected("Pesquisar")'
-                OnClickCallback='(() => ButtonClick("Pesquisar"))'>
+            <MenuButton Descricao="Pesquisar" Selecionado='@IsMenuSelected("Search")'
+                OnClickCallback='(() => ButtonClick("Search"))'>
                 <i class="bi bi-search"></i>
             </MenuButton>
-            <MenuButton Descricao="Artistas" Selecionado='@IsMenuSelected("Artistas")'
-                OnClickCallback='(() => ButtonClick("Artistas"))'>
+            <MenuButton Descricao="Artistas" Selecionado='@IsMenuSelected("Artists")'
+                OnClickCallback='(() => ButtonClick("Artists"))'>
                 <i class="bi bi-person-arms-up"></i>
             </MenuButton>
         </div>
@@ -28,7 +28,8 @@
             <div class="playlist-scroll">
                 @foreach (var item in playlists)
                 {
-                    <MenuButton Descricao=@item.Name>
+                    <MenuButton Descricao=@item.Name Selecionado='@IsMenuSelected(item.Id)'
+                        OnClickCallback='(() => GoToPlaylist(item.Id))'>
                         <i class="bi bi-music-note-beamed"></i>
                     </MenuButton>
                 }
@@ -45,24 +46,26 @@
 @code {
     [Inject]
     ISpotifyService SpotifyService { get; set; }
-    public string menuSelecionado = "Home";
 
     public Playlist[] playlists { get; set; } = [];
 
     protected override async Task OnInitializedAsync()
     {
+        Console.WriteLine("carregando menu");
         await this.buscarPlaylists();
     }
 
     private void ButtonClick(string button)
     {
-        this.menuSelecionado = button;
-        Console.WriteLine(this.menuSelecionado);
+        AppData.menuSelecionado = button;
+        NavigationManager.NavigateTo("player");
+
     }
 
     public void GoToPlaylist(string playlistId)
     {
-        this.menuSelecionado = playlistId;
+        AppData.menuSelecionado = playlistId;
+        NavigationManager.NavigateTo($"list/playlist/{playlistId}", false);
         // this.router.navigateByUrl(`player/lista/playlist/${playlistId}`)
     }
 
@@ -72,7 +75,7 @@
     }
     private bool IsMenuSelected(string menuDescricao)
     {
-        return menuSelecionado == menuDescricao;
+        return AppData.menuSelecionado == menuDescricao;
     }
 
 }

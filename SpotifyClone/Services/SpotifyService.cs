@@ -9,7 +9,7 @@ public class SpotifyService : ISpotifyService
     private readonly IConfiguration configuration;
     IManagerSpotifyLocalStorageService SpotifyLocalStorageService;
     private SpotifyClient SpotifyClient;
-    private User user;
+    private User user = null;
 
     public SpotifyService(IConfiguration _configuration, IManagerSpotifyLocalStorageService spotifyLocalStorageService)
     {
@@ -26,7 +26,6 @@ public class SpotifyService : ISpotifyService
         }
 
         var session = await SpotifyLocalStorageService.GetUserSession();
-
         if (session is null)
             return false;
 
@@ -87,9 +86,9 @@ public class SpotifyService : ISpotifyService
 
     }
 
-    public void Logout()
+    public async Task Logout()
     {
-        throw new NotImplementedException();
+        await SpotifyLocalStorageService.RemoveUserSession();
     }
 
     public User GetUser()
@@ -108,7 +107,6 @@ public class SpotifyService : ISpotifyService
 
             await foreach (var item in SpotifyClient.Paginate(page))
             {
-
                 ListPlaylist.Add(Playlist.FullPlaylistConvertPlaylist(item));
                 // you can use "break" here!
             }
@@ -117,6 +115,7 @@ public class SpotifyService : ISpotifyService
         catch (System.Exception e)
         {
             Console.WriteLine(e.Message);
+            await this.Logout();
             return null;
         }
     }

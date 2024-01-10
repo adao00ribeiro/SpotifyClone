@@ -1,21 +1,17 @@
-
-
-
-
 <div class="containerMenuButton">
 <button class="@GetButtonClass()" type="button" @onclick="OnClickCallback" >
-    @ChildContent
+        @ChildContent
     <span>@Descricao</span>
 </button>
 </div>
 
 @code {
     [Parameter]
-    public string Descricao {get;set;}
-    [Parameter] public bool Selecionado { get; set; }  
+    public string Descricao { get; set; }
+    [Parameter] public bool Selecionado { get; set; }
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> OnClickCallback { get; set; }
-     private string GetButtonClass()
+    private string GetButtonClass()
     {
         return Selecionado ? "selecionado" : "";
     }

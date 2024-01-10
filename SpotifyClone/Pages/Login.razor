@@ -3,7 +3,9 @@
 @inject NavigationManager NavigationManager;
 @inject IManagerSpotifyLocalStorageService SpotifylocalStorage;
 @inject AuthenticationStateProvider provider;
+
 <PageTitle>Login</PageTitle>
+
 <div class="containerLogin">
     <div class="base flex flex-center">
         <img src="/images/spotify-logo-inicio.png" alt="">
@@ -12,32 +14,31 @@
         </button>
     </div>
 </div>
+
 @code {
-    
+
     protected override async Task OnInitializedAsync()
     {
         await LoadAuthenticationState();
     }
-   private async Task LoadAuthenticationState()
+    private async Task LoadAuthenticationState()
     {
         var token = SpotifyService.GetTokenUrlCallback(NavigationManager.Uri);
-
+        Console.WriteLine("aki" + token);
         if (!string.IsNullOrEmpty(token))
         {
-          await SpotifyService.DefineAccessToken(token);
-          UserSession userSession = new UserSession();
-          userSession.Token = token;
-          userSession.ExpiresIn = 30;
-          userSession.UserName = "adao";
-          userSession.Role = "admin";
-         await SpotifylocalStorage.SaveUserSession(userSession);
-         await (provider as CustomAuthenticationStateProvider).UpdateAuthenticationState(userSession);
-            
-            
+            await SpotifyService.DefineAccessToken(token);
+            UserSession userSession = new UserSession();
+            userSession.Token = token;
+            userSession.ExpiresIn = 30;
+            userSession.UserName = "adao";
+            userSession.Role = "admin";
+            await SpotifylocalStorage.SaveUserSession(userSession);
+            await (provider as CustomAuthenticationStateProvider).UpdateAuthenticationState(userSession);
             NavigationManager.NavigateTo("/player");
         }
     }
-      protected override async Task OnParametersSetAsync()
+    protected override async Task OnParametersSetAsync()
     {
         await LoadAuthenticationState();
     }

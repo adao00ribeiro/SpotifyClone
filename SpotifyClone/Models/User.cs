@@ -11,6 +11,7 @@ public class User
     public string Id { get; private set; }
     public string Name { get; private set; }
     public string imageUrl { get; private set; }
+    
     public User(string id, string name, string imageUrl)
     {
         Id = id;
