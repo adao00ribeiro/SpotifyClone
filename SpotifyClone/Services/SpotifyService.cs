@@ -120,4 +120,36 @@ public class SpotifyService : ISpotifyService
         }
     }
 
+    public async Task<Artist[]> SearchTopArtists(int limit)
+    {
+        var artistas = await this.SpotifyClient.Personalization.GetTopArtists();
+        var artistsList = artistas?.Items?.Take(limit);
+        var artists = artistsList.Select(x => Artist.FullArtistConvertArtist(x)).ToArray();
+        return artists;
+    }
+
+    public async Task ExecuteSong(string uriDaMusica)
+    {
+        PlayerAddToQueueRequest request = new PlayerAddToQueueRequest(uriDaMusica);
+        var adicionarResultado = await SpotifyClient.Player.AddToQueue(request);
+        await this.SpotifyClient.Player.SkipNext();
+    }
+
+    public Task SetCurrentSong(Music music)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<Music[]> SearchSongs(int offset = 0, int limit = 50)
+    {
+
+        var minhasMusicas = await SpotifyClient.Library.GetTracks(new LibraryTracksRequest
+        {
+            Offset = offset,
+            Limit = limit,
+        });
+        Console.WriteLine("procurando musica" + minhasMusicas.Total);
+        return minhasMusicas.Items.Select(x => Music.SavedTrackConvertMusic(x.Track)).ToArray();
+    }
+
 }
