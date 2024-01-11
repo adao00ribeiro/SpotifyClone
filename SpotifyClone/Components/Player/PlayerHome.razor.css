@@ -1,6 +1,7 @@
 .containerPlayerHome {
     display: flex;
     justify-content: space-between;
+
 }
 
 .containerPlayerHome::-webkit-scrollbar {
@@ -17,25 +18,21 @@
 }
 
 .minhas-musicas {
+
     padding: 0px 50px;
     padding-bottom: 20px;
+    padding-top: 20px;
     width: 100%;
     max-height: 100vh;
     overflow-y: scroll;
 }
 
 .d-block {
+
     display: block;
 }
 
 .painel-direito {
     height: 100vh;
-}
-
-
-.table {
-    width: 100%;
-    text-align: left;
-    table-layout: fixed;
-    border-collapse: collapse;
+    background-color: red;
 }

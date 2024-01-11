@@ -1,12 +1,14 @@
+@inject ISpotifyService SpotifyService
+
+
+
 <div class="containerPlayerHome">
     <div class="minhas-musicas">
-        <span class="titulo-bg mt-4">
+        <span class="titulo fs-1">
             Seu Top Artista
         </span>
-
         <TopArtist></TopArtist>
-
-        <span class="titulo-bg mt-4">
+        <span class="titulo fs-3">
             Musicas Curtidas
         </span>
 
@@ -21,10 +23,62 @@
                 </tr>
             </thead>
             <tbody>
-
+                @foreach (var musica in musicas)
+                {
+                    <tr @onclick='(() => executarMusica(musica))'>
+                        <td>
+                            <i class="bi bi-play play"></i>
+                        </td>
+                        <td>@musica.Title </td>
+                        <td>@obterArtistas(musica) </td>
+                        <td class="direita">@musica.Time </td>
+                        <td>ADAO RIBEIRO CORREIA</td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
     <PanelRight>
     </PanelRight>
 </div>
+
+
+@code {
+
+    public Music[] musicas = new Music[0];
+    public Music musicaAtual = new Music();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await this.obterMusicas();
+        this.obterMusicaAtual();
+    }
+    public async Task obterMusicas()
+    {
+        this.musicas = await this.SpotifyService.SearchSongs();
+
+
+    }
+
+    public async void obterMusicaAtual()
+    {
+
+    }
+
+    public string obterArtistas(Music musica)
+    {
+        if (musica.Artists != null && musica.Artists.Any())
+        {
+            return string.Join(", ", musica.Artists.Select(artista => artista.Name));
+        }
+
+        return "nOME ARTISTA";
+    }
+
+    public async void executarMusica(Music musica)
+    {
+        await this.SpotifyService.ExecuteSong(musica.Uri);
+        await this.SpotifyService.SetCurrentSong(musica);
+    }
+}
