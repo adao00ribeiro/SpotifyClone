@@ -1,16 +1,17 @@
 @inject ISpotifyService SpotifyService
-<div class="card p-20 mt-2 d-block">
+
+<div class="card p-20">
   <div class="artista flex">
-    <span class="titulo-bg">
-      asdasdasdasd
+    <span class="titulo">
+      @topArtista.Name
     </span>
   </div>
-  <div class="image" [style.background-image]="'url(' + topArtista.imagemUrl + ')'">
+  <div class="image" style="background-image: url('@topArtista.ImageUrl')">
   </div>
 </div>
 
 @code {
-  public Artist topArtista;
+  public Artist topArtista = new Artist();
 
   protected override async void OnInitialized()
   {
@@ -19,12 +20,13 @@
 
   public async Task buscarArtista()
   {
-    /*
-    var artists = await SpotifyService.buscarTopArtistas(1);
 
-    if (artistas is not null)
-    this.topArtista = artists.pop();
-    */
+    var artists = await SpotifyService.SearchTopArtists(1);
+
+    if (artists is not null)
+    {
+      this.topArtista = artists.First();
+    }
   }
 
 

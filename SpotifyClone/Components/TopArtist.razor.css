@@ -1,8 +1,10 @@
 .card {
+  display: block;
   height: 200px;
   position: relative;
   overflow: hidden;
 }
+
 .artista {
   position: absolute;
   top: 0;
