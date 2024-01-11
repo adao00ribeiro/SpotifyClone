@@ -14,5 +14,9 @@ public interface ISpotifyService
     Task<bool> InitilizeUser();
     User GetUser();
     Task<Playlist[]> SearchUserPlaylist(int offset, int limit = 50);
+    Task<Artist[]> SearchTopArtists(int limit);
     Task Logout();
+    Task<Music[]> SearchSongs(int offset = 0, int limit = 50);
+    Task ExecuteSong(string Id);
+    Task SetCurrentSong(Music music);
 }
