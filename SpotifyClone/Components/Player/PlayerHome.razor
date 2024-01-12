@@ -1,43 +1,49 @@
 @inject ISpotifyService SpotifyService
 
 
-
 <div class="containerPlayerHome">
-    <div class="minhas-musicas">
-        <span class="titulo fs-1">
-            Seu Top Artista
-        </span>
-        <TopArtist></TopArtist>
-        <span class="titulo fs-3">
-            Musicas Curtidas
-        </span>
-
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th class="w-5">#</th>
-                    <th class="w-35">Titulo</th>
-                    <th class="w-30">Artista</th>
-                    <th class="w-10 direita">Tempo</th>
-                    <th class="w-20">Album</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var musica in musicas)
-                {
-                    <tr @onclick='(() => executarMusica(musica))'>
-                        <td>
-                            <i class="bi bi-play play"></i>
-                        </td>
-                        <td>@musica.Title </td>
-                        <td>@obterArtistas(musica) </td>
-                        <td class="direita">@musica.Time </td>
-                        <td>ADAO RIBEIRO CORREIA</td>
+    @if (musicas.Length == 0)
+    {
+        <h2>Carregando ...</h2>
+    }
+    else
+    {
+        <div class="minhas-musicas">
+            <span class="titulo fs-2">
+                Seu Top Artista
+            </span>
+            <TopArtist></TopArtist>
+            <span class="titulo fs-5 mt-4">
+                Musicas Curtidas
+            </span>
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th class="w-5">#</th>
+                        <th class="w-35">Titulo</th>
+                        <th class="w-30">Artista</th>
+                        <th class="w-10 direita">Tempo</th>
+                        <th class="w-20">Album</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var musica in musicas)
+                    {
+                        <tr @onclick='(() => executarMusica(musica))'>
+                            <td>
+                                <i class="bi bi-play play"></i>
+                            </td>
+                            <td>@musica.Title </td>
+                            <td>@obterArtistas(musica) </td>
+                            <td class="direita">@musica.Time </td>
+                            <td>ADAO RIBEIRO CORREIA</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+
     <PanelRight>
     </PanelRight>
 </div>
@@ -57,8 +63,6 @@
     public async Task obterMusicas()
     {
         this.musicas = await this.SpotifyService.SearchSongs();
-
-
     }
 
     public async void obterMusicaAtual()

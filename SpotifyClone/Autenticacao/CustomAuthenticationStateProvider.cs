@@ -16,13 +16,14 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        
+
         try
         {
             var userSession = await _sessionStorage.GetItemAsync<UserSession>("UserSession");
-           
-            if (userSession == null){
-        
+
+            if (userSession == null)
+            {
+
                 return await Task.FromResult(new AuthenticationState(_anonymous));
             }
             var claimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity(new List<Claim>
@@ -30,15 +31,19 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
                 new Claim(ClaimTypes.Name, userSession.UserName),
                 new Claim(ClaimTypes.Role, userSession.Role)
             }, "Spotify"));
-                
+
             return await Task.FromResult(new AuthenticationState(claimsPrincipal));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return await Task.FromResult(new AuthenticationState(_anonymous));
         }
     }
 
+    public async Task<UserSession> GetUserSession()
+    {
+        return await _sessionStorage.GetItemAsync<UserSession>("UserSession");
+    }
     public async Task UpdateAuthenticationState(UserSession? userSession)
     {
         ClaimsPrincipal claimsPrincipal;

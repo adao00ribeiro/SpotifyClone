@@ -40,18 +40,12 @@
         <BaseBoardUser></BaseBoardUser>
     </div>
 </div>
-
-
-
 @code {
     [Inject]
     ISpotifyService SpotifyService { get; set; }
-
     public Playlist[] playlists { get; set; } = [];
-
     protected override async Task OnInitializedAsync()
     {
-        Console.WriteLine("carregando menu");
         await this.buscarPlaylists();
     }
 

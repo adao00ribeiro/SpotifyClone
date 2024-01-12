@@ -3,10 +3,8 @@
 
 :root {
 
-
-
-
     --color-primary: #37AB00;
+    --color-scroll: #36ab005d;
     --color-primary-hover: #42c903;
     --color-background-primary: #FBFEF4;
     --color-background-second: #FFF;
@@ -39,6 +37,31 @@ body {
     box-sizing: border-box;
 }
 
+.MainLayout {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+}
+
+.containerBody {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-scroll);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
 .titulo {
     color: var(--color-primary);
     display: block;
@@ -49,10 +72,6 @@ body {
     font-size: 2.2rem;
 }
 
-.MainLayout {
-    display: flex;
-    flex-direction: row;
-}
 
 .flex {
     display: flex;
@@ -167,8 +186,6 @@ body {
 
 .table th,
 .table td {
-    justify-content: center;
-    align-items: center;
     padding-right: 20px;
     white-space: nowrap;
     overflow: hidden;
@@ -277,9 +294,7 @@ body {
     width: 100%;
 }
 
-.direita {
-    text-align: right;
-}
+
 
 code {
     color: #c02d76;

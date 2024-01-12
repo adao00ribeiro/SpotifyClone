@@ -1,5 +1,4 @@
 ﻿@inject ISpotifyService SpotifyService
-@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider provider;
 <CascadingAuthenticationState>
@@ -24,28 +23,35 @@
 </CascadingAuthenticationState>
 @code {
     private bool usuarioCriado;
-    public void naoAutenticado()
+    public async Task naoAutenticado()
     {
-        SpotifylocalStorage.RemoveUserSession();
+        CustomAuthenticationStateProvider custom = provider as CustomAuthenticationStateProvider;
+        await custom.UpdateAuthenticationState(null);
         NavigationManager.NavigateTo("/login");
     }
     private async Task OnNavigateAsync(NavigationContext args)
     {
-
-        if (args.Path != "login")
+        CustomAuthenticationStateProvider custom = provider as CustomAuthenticationStateProvider;
+        if (!args.Path.Contains("login"))
         {
+            var token = await custom.GetToken();
+            Console.WriteLine("loginfeitoindoplayer" + args.Path);
+            if (string.IsNullOrEmpty(token))
+            {
+                await naoAutenticado();
+            }
+
             usuarioCriado = await SpotifyService.InitilizeUser();
 
             if (!usuarioCriado)
             {
-                naoAutenticado();
+                await naoAutenticado();
             }
             else
             {
-                var usersession = await SpotifylocalStorage.GetUserSession();
-                await (provider as CustomAuthenticationStateProvider).UpdateAuthenticationState(usersession);
+                UserSession userSession = await custom.GetUserSession();
+                await custom.UpdateAuthenticationState(userSession);
             }
         }
-
     }
 }

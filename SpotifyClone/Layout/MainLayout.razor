@@ -1,10 +1,23 @@
 ﻿@inherits LayoutComponentBase
-@inject IManagerSpotifyLocalStorageService SpotifylocalStorage
 @inject AuthenticationStateProvider _authStateProvider
 @inject ISpotifyService SpotifyService
 @inject NavigationManager NavigationManager
 @inject AppDataService AppData
 <div class="MainLayout">
-    <PanelLeft></PanelLeft>
-    @Body
+    @if (authState != null && authState.User.Identity.IsAuthenticated)
+    {
+        <PanelLeft></PanelLeft>
+    }
+    <div class="containerBody">
+        @Body
+    </div>
 </div>
+
+@code {
+    private AuthenticationState authState;
+
+    protected override async Task OnInitializedAsync()
+    {
+        authState = await _authStateProvider.GetAuthenticationStateAsync();
+    }
+}

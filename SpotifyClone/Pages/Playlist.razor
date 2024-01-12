@@ -1,31 +1,51 @@
 @page "/list/{type}/{Id}"
+@inject ISpotifyService SpotifyService
+@attribute [StreamRendering(true)]
 
 <PageTitle>playlist</PageTitle>
+
 <div class="containerPlaylist">
-    <div class="lista mt-4">
-        <Banner></Banner>
-        <div class="titulo-bg mt-7">
-            title
+    @if (musicas.Length == 0)
+    {
+        <h3>Carregando ...</h3>
+    }
+    else
+    {
+        <div class="lista mt-4">
+            <Banner ImageUrl=@bannerImagemUrl Text="@bannerTexto"></Banner>
+            <div class="titulo fs-4 m-3">
+                @Title
+            </div>
+            <table class="table mt-3">
+                <thead>
+                    <tr>
+                        <th class="w-5">#</th>
+                        <th class="w-35">Titulo</th>
+                        <th class="w-30">Artista</th>
+                        <th class="w-10 direita">Tempo</th>
+                        <th class="w-20">Album</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var musica in musicas)
+                    {
+                        <tr @onclick='(() => executarMusica(musica))'>
+                            <td>
+                                <i class="bi bi-play play"></i>
+                            </td>
+                            <td>@musica.Title </td>
+                            <td>adaoribeiro</td>
+                            <td class="direita">@musica.Time </td>
+                            <td>ADAO RIBEIRO CORREIA</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
         </div>
-
-        <table class="table mt-3">
-            <thead>
-                <tr>
-                    <th class="w-5">#</th>
-                    <th class="w-35">Titulo</th>
-                    <th class="w-30">Artista</th>
-                    <th class="w-10 direita">Tempo</th>
-                    <th class="w-20">Album</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-
-    </div>
+    }
     <PanelRight>
-
     </PanelRight>
 </div>
 @code {
@@ -36,9 +56,54 @@
     [Parameter]
     public string Id { get; set; }
     [Parameter]
-    public string Title { get; set; }
-    protected override void OnInitialized()
+    public string Title { get; set; } = "title";
+
+    public string bannerImagemUrl { get; set; }
+    public string bannerTexto { get; set; } = "olmundo";
+
+    public Music[] musicas = new Music[0];
+    public Music musicaAtual = new Music();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await obterMusicas();
+
+        await obterMusicaAtual();
+    }
+    public async Task obterMusicaAtual()
     {
 
+    }
+    public async Task obterDadosPlaylist(string playlistId)
+    {
+        var playlistMusicas = await SpotifyService.buscarMusicasPlaylist(playlistId, 0, 20);
+
+        this.definirDadosPagina(playlistMusicas.Name, playlistMusicas.imageUrl, playlistMusicas.Musics);
+        this.Title = "Musicas Playlist: " + playlistMusicas.Name;
+
+    }
+    public async Task obterDadosArtista(string artistaId)
+    {
+
+    }
+    public void definirDadosPagina(string bannerTexto, string bannerImage, Music[] musicas)
+    {
+        this.bannerImagemUrl = bannerImage;
+        this.bannerTexto = bannerTexto;
+        this.musicas = musicas;
+    }
+    public string ObterArtistas(Music musica)
+    {
+        return string.Join(", ", musica.Artists.Select(artista => artista.Name));
+    }
+    public async Task obterMusicas()
+    {
+        await (this.type == "playlist" ? obterDadosPlaylist(this.Id) : obterDadosArtista(this.Id));
+    }
+    public async void executarMusica(Music musica)
+    {
+        await this.SpotifyService.ExecuteSong(musica.Uri);
+        await this.SpotifyService.SetCurrentSong(musica);
     }
 }

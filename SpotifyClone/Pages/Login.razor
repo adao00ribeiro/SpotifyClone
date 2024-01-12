@@ -1,7 +1,6 @@
 @page "/login"
 @inject ISpotifyService SpotifyService;
 @inject NavigationManager NavigationManager;
-@inject IManagerSpotifyLocalStorageService SpotifylocalStorage;
 @inject AuthenticationStateProvider provider;
 
 <PageTitle>Login</PageTitle>
@@ -24,17 +23,17 @@
     private async Task LoadAuthenticationState()
     {
         var token = SpotifyService.GetTokenUrlCallback(NavigationManager.Uri);
-        Console.WriteLine("aki" + token);
+
         if (!string.IsNullOrEmpty(token))
         {
             await SpotifyService.DefineAccessToken(token);
             UserSession userSession = new UserSession();
             userSession.Token = token;
-            userSession.ExpiresIn = 30;
+            userSession.ExpiresIn = 5000;
             userSession.UserName = "adao";
             userSession.Role = "admin";
-            await SpotifylocalStorage.SaveUserSession(userSession);
             await (provider as CustomAuthenticationStateProvider).UpdateAuthenticationState(userSession);
+            Console.WriteLine("testando o token" + token);
             NavigationManager.NavigateTo("/player");
         }
     }

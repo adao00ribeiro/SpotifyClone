@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Components.Authorization;
 using SpotifyAPI.Web;
+using SpotifyClone.Autenticacao;
 using SpotifyClone.Models;
 using SpotifyClone.Services.Interfaces;
 
@@ -7,15 +9,14 @@ namespace SpotifyClone.Services;
 public class SpotifyService : ISpotifyService
 {
     private readonly IConfiguration configuration;
-    IManagerSpotifyLocalStorageService SpotifyLocalStorageService;
+    CustomAuthenticationStateProvider AuthenticationProvider;
     private SpotifyClient SpotifyClient;
     private User user = null;
 
-    public SpotifyService(IConfiguration _configuration, IManagerSpotifyLocalStorageService spotifyLocalStorageService)
+    public SpotifyService(IConfiguration _configuration, AuthenticationStateProvider provider)
     {
-
         configuration = _configuration;
-        SpotifyLocalStorageService = spotifyLocalStorageService;
+        AuthenticationProvider = provider as CustomAuthenticationStateProvider;
     }
 
     public async Task<bool> InitilizeUser()
@@ -24,14 +25,12 @@ public class SpotifyService : ISpotifyService
         {
             return true;
         }
-
-        var session = await SpotifyLocalStorageService.GetUserSession();
-        if (session is null)
+        var token = await AuthenticationProvider.GetToken();
+        if (string.IsNullOrEmpty(token))
             return false;
-
         try
         {
-            await this.DefineAccessToken(session.Token);
+            await this.DefineAccessToken(token);
             await this.GetSpotifyUser();
             return this.user is not null;
         }
@@ -88,7 +87,7 @@ public class SpotifyService : ISpotifyService
 
     public async Task Logout()
     {
-        await SpotifyLocalStorageService.RemoveUserSession();
+        await AuthenticationProvider.UpdateAuthenticationState(null);
     }
 
     public User GetUser()
@@ -150,6 +149,25 @@ public class SpotifyService : ISpotifyService
         });
         Console.WriteLine("procurando musica" + minhasMusicas.Total);
         return minhasMusicas.Items.Select(x => Music.SavedTrackConvertMusic(x.Track)).ToArray();
+    }
+
+    public async Task<Playlist> buscarMusicasPlaylist(string playlistId, int offset = 0, int limit = 50)
+    {
+        var fullPlaylist = await SpotifyClient.Playlists.Get(playlistId);
+        Music[] musicas = null;
+        // Verifica se há faixas na playlist
+        if (fullPlaylist?.Tracks != null)
+        {
+            var playlistTracks = await SpotifyClient.Playlists.GetItems(playlistId, new PlaylistGetItemsRequest
+            {
+                Offset = offset,
+                Limit = limit
+            });
+            // Mapeia as faixas do Spotify para a sua classe Music
+            musicas = playlistTracks?.Items?.Select(item => Music.SpotifyTrackConvertMusic(item.Track as FullTrack)).ToArray();
+        }
+
+        return new Playlist(fullPlaylist.Id, fullPlaylist.Name, fullPlaylist.Images.FirstOrDefault()?.Url, musicas);
     }
 
 }

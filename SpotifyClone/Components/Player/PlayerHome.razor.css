@@ -4,19 +4,6 @@
 
 }
 
-.containerPlayerHome::-webkit-scrollbar {
-    width: 7px;
-}
-
-.containerPlayerHome::-webkit-scrollbar-thumb {
-    background-color: rgba(var(--color-primary), .2);
-    border-radius: 10px;
-}
-
-.containerPlayerHome::-webkit-scrollbar-track {
-    background: transparent;
-}
-
 .minhas-musicas {
 
     padding: 0px 50px;
@@ -28,11 +15,5 @@
 }
 
 .d-block {
-
     display: block;
-}
-
-.painel-direito {
-    height: 100vh;
-    background-color: red;
 }

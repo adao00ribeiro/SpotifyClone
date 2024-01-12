@@ -1,8 +1,8 @@
 @inject ISpotifyService SpotifyService
 
-<div class="card p-20">
+<div class="card p-20 mt-2 d-block">
   <div class="artista flex">
-    <span class="titulo">
+    <span class="titulo fs-3">
       @topArtista.Name
     </span>
   </div>
@@ -13,7 +13,7 @@
 @code {
   public Artist topArtista = new Artist();
 
-  protected override async void OnInitialized()
+  protected override async Task OnInitializedAsync()
   {
     await buscarArtista();
   }

@@ -59,6 +59,20 @@ public class Music
         var data = DateTime.MinValue.AddMilliseconds(ms);
         return data.ToString("mm:ss");
     }
+
+    internal static Music SpotifyTrackConvertMusic(FullTrack? fullTrack)
+    {
+        if (fullTrack is null)
+        {
+            return new Music();
+        }
+        return new Music(
+             fullTrack.Id,
+             fullTrack.Name,
+             MsParaMinutos(fullTrack.DurationMs),
+             fullTrack.Uri
+    );
+    }
 }
 
 
