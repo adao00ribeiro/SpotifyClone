@@ -14,11 +14,16 @@
 @code {
     public User user = null;
 
-    protected override void OnInitialized()
+     protected override async Task OnInitializedAsync()
     {
-        this.user = SpotifyService.GetUser();
+       await SpotifyService.GetSpotifyUser();
+       this.user = SpotifyService.GetUser();
+        
     }
-
+   protected override async Task OnParametersSetAsync()
+    {
+         
+    }
     public void Logout()
     {
         SpotifyService.Logout();
