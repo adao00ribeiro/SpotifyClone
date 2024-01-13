@@ -18,6 +18,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        authState = await _authStateProvider.GetAuthenticationStateAsync();
+      
+    }
+     protected override async Task OnParametersSetAsync()
+    {
+         authState = await _authStateProvider.GetAuthenticationStateAsync();
     }
 }
