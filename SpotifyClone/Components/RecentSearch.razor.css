@@ -20,11 +20,11 @@
     border-width: 2px;
   }
   
-  .containerRecentSerach .sugestoes {
+  .sugestoes {
     flex-wrap: wrap;
   }
   
-  .containerRecentSerach .sugestoes span {
+.sugestoes span {
     background-color: var(--branco);
     margin-right: 5px;
     padding: 5px 10px;
@@ -36,8 +36,8 @@
     cursor: pointer;
   }
   
-  .containerRecentSerach .sugestoes span:hover {
-    background-color: rgba(var(--color-primary), .8);
+ .sugestoes span:hover {
+    background-color: var(--color-primary-hover);
     color: var(--branco);
   }
   
