@@ -1,13 +1,17 @@
-
-
-<h1>artist</h1>
+<div class="flex container mt-1" >
+    <img src="@imagemSrc">
+    <span>
+        olamund
+    </span>
+</div>
 @code {
-    
-    protected  override async void OnInitialized()
+    [Parameter]
+    public string imagemSrc { get; set; } 
+
+
+    protected override async void OnInitialized()
     {
-    
-       
+
+
     }
 }
-
-

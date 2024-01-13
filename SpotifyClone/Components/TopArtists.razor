@@ -1,12 +1,25 @@
 
-<div class=@Class>
-<span class="titulo-md" > Top 5 Artistas</span>
-<ArtistItemImage></ArtistItemImage>
+<div class="mt-5">
+<span class="titulo" > Top 5 Artistas</span>
+
+<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
+<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
+<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
+<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
+<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
 </div>
 
 
 @code {
+  public Artist[] topArtista {get;set;} 
 
-[Parameter]
-public string Class {get;set;}
+
+
+  protected override async Task OnInitializedAsync(){
+    this.buscarTopArtistas();
+  }
+
+  public async Task buscarTopArtistas(){
+
+  }
 }
