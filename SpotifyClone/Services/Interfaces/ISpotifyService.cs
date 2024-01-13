@@ -20,4 +20,6 @@ public interface ISpotifyService
     Task<Playlist> buscarMusicasPlaylist(string playlistId, int offset = 0, int limit = 50);
     Task ExecuteSong(string Id);
     Task SetCurrentSong(Music music);
+    Task GetSpotifyUser();
 }
+
