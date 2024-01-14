@@ -1,14 +1,14 @@
 <div class="flex container mt-1" >
     <img src="@imagemSrc">
     <span>
-        olamund
+       @ChildContent
     </span>
 </div>
 @code {
     [Parameter]
     public string imagemSrc { get; set; } 
-
-
+    
+   [Parameter] public RenderFragment ChildContent { get; set; }
     protected override async void OnInitialized()
     {
 

@@ -1,25 +1,21 @@
-
+@inject ISpotifyService SpotifyService
 <div class="mt-5">
 <span class="titulo" > Top 5 Artistas</span>
 
-<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
-<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
-<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
-<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
-<ArtistItemImage imagemSrc="https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg"></ArtistItemImage>
+@foreach(var artist in artists){
+<ArtistItemImage imagemSrc=@artist.ImageUrl > @artist.Name</ArtistItemImage>
+}
 </div>
 
 
 @code {
-  public Artist[] topArtista {get;set;} 
-
-
+  public Artist[] artists {get;set;} = new Artist[0];
 
   protected override async Task OnInitializedAsync(){
-    this.buscarTopArtistas();
+   await this.buscarTopArtistas();
   }
 
   public async Task buscarTopArtistas(){
-
+    artists = await SpotifyService.SearchTopArtists(5);
   }
 }
