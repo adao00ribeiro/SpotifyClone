@@ -21,5 +21,8 @@ public interface ISpotifyService
     Task ExecuteSong(string Id);
     Task SetCurrentSong(Music music);
     Task GetSpotifyUser();
+    Task NextSong();
+    Task PreviousSong();
+    Task<Music> GetCurrentSong();
 }
 

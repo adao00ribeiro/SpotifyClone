@@ -170,4 +170,18 @@ public class SpotifyService : ISpotifyService
         return new Playlist(fullPlaylist.Id, fullPlaylist.Name, fullPlaylist.Images.FirstOrDefault()?.Url, musicas);
     }
 
+    public Task NextSong()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task PreviousSong()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<Music> GetCurrentSong()
+    {
+        throw new NotImplementedException();
+    }
 }
