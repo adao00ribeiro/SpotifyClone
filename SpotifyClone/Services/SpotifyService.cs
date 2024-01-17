@@ -107,7 +107,7 @@ public class SpotifyService : ISpotifyService
             await foreach (var item in SpotifyClient.Paginate(page))
             {
                 ListPlaylist.Add(Playlist.FullPlaylistConvertPlaylist(item));
-                // you can use "break" here!
+
             }
             return ListPlaylist.ToArray();
         }
@@ -129,9 +129,17 @@ public class SpotifyService : ISpotifyService
 
     public async Task ExecuteSong(string uriDaMusica)
     {
-        PlayerAddToQueueRequest request = new PlayerAddToQueueRequest(uriDaMusica);
-        var adicionarResultado = await SpotifyClient.Player.AddToQueue(request);
-        await this.SpotifyClient.Player.SkipNext();
+        try
+        {
+            PlayerAddToQueueRequest request = new PlayerAddToQueueRequest(uriDaMusica);
+            var adicionarResultado = await SpotifyClient.Player.AddToQueue(request);
+            await this.SpotifyClient.Player.SkipNext();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+
     }
 
 
@@ -180,7 +188,6 @@ public class SpotifyService : ISpotifyService
     {
         var request = new PlayerCurrentlyPlayingRequest(PlayerCurrentlyPlayingRequest.AdditionalTypes.Track);
         var CurrentlyPlaying = await SpotifyClient.Player.GetCurrentlyPlaying(request);
-        var song = Music.SpotifyTrackConvertMusic(CurrentlyPlaying.Item as FullTrack);
-        return song;
+        return Music.SpotifyTrackConvertMusic(CurrentlyPlaying.Item as FullTrack);
     }
 }

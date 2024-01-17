@@ -86,7 +86,6 @@
     }
     public string IsExecuteMusic(Music music)
     {
-        Console.WriteLine(music.Title + " :::: " + musicaAtual.Title);
         return music.Id == musicaAtual.Id ? "executando" : "testandomusic";
     }
     public async Task obterDadosArtista(string artistaId)
@@ -109,8 +108,16 @@
     }
     public async void executarMusica(Music musica)
     {
-        await this.SpotifyService.ExecuteSong(musica.Uri);
-        this.PlayerService.definirMusicaAtual(musica);
+        try
+        {
+            await this.SpotifyService.ExecuteSong(musica.Uri);
+            this.PlayerService.definirMusicaAtual(musica);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Erro de requisicao");
+        }
+
     }
 
     public void Dispose()

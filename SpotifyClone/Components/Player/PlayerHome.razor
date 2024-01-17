@@ -1,5 +1,5 @@
 @inject ISpotifyService SpotifyService
-
+@inject IPlayerService PlayerService
 
 <div class="containerPlayerHome">
     @if (musicas.Length == 0)
@@ -83,6 +83,6 @@
     public async void executarMusica(Music musica)
     {
         await this.SpotifyService.ExecuteSong(musica.Uri);
-        await this.SpotifyService.SetCurrentSong(musica);
+        this.PlayerService.definirMusicaAtual(musica);
     }
 }
