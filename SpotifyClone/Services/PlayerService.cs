@@ -4,29 +4,26 @@ using SpotifyClone.Services.Interfaces;
 namespace SpotifyClone.Services;
 public class PlayerService : IPlayerService
 {
-    public Action<Music> musicaAtual { get; set; }
-    private Timer timer;
+    private Action<Music> _musicaAtual;
+    public Action<Music> musicaAtual
+    {
+        get { return _musicaAtual; }
+        set { _musicaAtual = value; }
+    }
     private ISpotifyService SpotifyService;
 
     public PlayerService(ISpotifyService spotifyService)
     {
         SpotifyService = spotifyService;
-        Task tas = this.obterMusicaAtual();
-        tas.Wait();
     }
-
     public async Task obterMusicaAtual()
     {
-        ClearTimer();
-        // Obtenho a musica
-        var musica = await this.SpotifyService.GetCurrentSong();
+        var musica = await SpotifyService.GetCurrentSong();
         this.definirMusicaAtual(musica);
-        timer = new Timer(async _ => await obterMusicaAtual(), null, 0, 5000);
     }
-
     public void definirMusicaAtual(Music musica)
     {
-        this.musicaAtual?.Invoke(musica);
+        this._musicaAtual?.Invoke(musica);
     }
 
     public async Task voltarMusica()
@@ -38,8 +35,5 @@ public class PlayerService : IPlayerService
     {
         await this.SpotifyService.NextSong();
     }
-    private void ClearTimer()
-    {
-        timer.Change(Timeout.Infinite, Timeout.Infinite);
-    }
+
 }
