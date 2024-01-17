@@ -1,6 +1,8 @@
 @page "/list/{type}/{Id}"
 @inject ISpotifyService SpotifyService
+@inject IPlayerService PlayerService
 @attribute [StreamRendering(true)]
+@implements IDisposable
 
 <PageTitle>playlist</PageTitle>
 
@@ -29,7 +31,7 @@
                 <tbody>
                     @foreach (var musica in musicas)
                     {
-                        <tr @onclick='(() => executarMusica(musica))'>
+                        <tr class='@IsExecuteMusic(musica)' @onclick='(() => executarMusica(musica))' key=@musica.Id>
                             <td>
                                 <i class="bi bi-play play"></i>
                             </td>
@@ -63,25 +65,29 @@
 
     public Music[] musicas = new Music[0];
     public Music musicaAtual = new Music();
-
+    Timer timer;
 
     protected override async Task OnInitializedAsync()
     {
+        timer = new Timer(async _ => await PlayerService.obterMusicaAtual(), null, 0, 5000);
+        PlayerService.musicaAtual += OnChangeMusicaAtual; ;
         await obterMusicas();
-
-        await obterMusicaAtual();
     }
-    public async Task obterMusicaAtual()
+    public void OnChangeMusicaAtual(Music music)
     {
-
+        musicaAtual = music;
+        StateHasChanged();
     }
     public async Task obterDadosPlaylist(string playlistId)
     {
         var playlistMusicas = await SpotifyService.buscarMusicasPlaylist(playlistId, 0, 20);
-
         this.definirDadosPagina(playlistMusicas.Name, playlistMusicas.imageUrl, playlistMusicas.Musics);
         this.Title = "Musicas Playlist: " + playlistMusicas.Name;
-
+    }
+    public string IsExecuteMusic(Music music)
+    {
+        Console.WriteLine(music.Title + " :::: " + musicaAtual.Title);
+        return music.Id == musicaAtual.Id ? "executando" : "testandomusic";
     }
     public async Task obterDadosArtista(string artistaId)
     {
@@ -104,6 +110,11 @@
     public async void executarMusica(Music musica)
     {
         await this.SpotifyService.ExecuteSong(musica.Uri);
-        await this.SpotifyService.SetCurrentSong(musica);
+        this.PlayerService.definirMusicaAtual(musica);
+    }
+
+    public void Dispose()
+    {
+        PlayerService.musicaAtual -= OnChangeMusicaAtual; ;
     }
 }
