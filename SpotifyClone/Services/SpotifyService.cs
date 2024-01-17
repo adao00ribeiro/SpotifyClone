@@ -134,10 +134,6 @@ public class SpotifyService : ISpotifyService
         await this.SpotifyClient.Player.SkipNext();
     }
 
-    public Task SetCurrentSong(Music music)
-    {
-        throw new NotImplementedException();
-    }
 
     public async Task<Music[]> SearchSongs(int offset = 0, int limit = 50)
     {
@@ -180,8 +176,11 @@ public class SpotifyService : ISpotifyService
         throw new NotImplementedException();
     }
 
-    public Task<Music> GetCurrentSong()
+    public async Task<Music> GetCurrentSong()
     {
-        throw new NotImplementedException();
+        var request = new PlayerCurrentlyPlayingRequest(PlayerCurrentlyPlayingRequest.AdditionalTypes.Track);
+        var CurrentlyPlaying = await SpotifyClient.Player.GetCurrentlyPlaying(request);
+        var song = Music.SpotifyTrackConvertMusic(CurrentlyPlaying.Item as FullTrack);
+        return song;
     }
 }
