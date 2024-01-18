@@ -49,7 +49,7 @@ public class Music
              spotifyTrack.Id,
              spotifyTrack.Name,
              MsParaMinutos(spotifyTrack.DurationMs),
-             spotifyTrack.Uri
+             spotifyTrack.Href
     );
     }
 
@@ -70,7 +70,7 @@ public class Music
              fullTrack.Id,
              fullTrack.Name,
              MsParaMinutos(fullTrack.DurationMs),
-             fullTrack.Uri
+             fullTrack.Album.Images.FirstOrDefault().Url
     );
     }
 }

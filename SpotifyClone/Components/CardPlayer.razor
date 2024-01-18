@@ -1,40 +1,49 @@
+@inject IPlayerService PlayerService
+@implements IDisposable
 
 
 <div class="container card p-10 mt-2  flex-grow-1">
-  <div class="image" style="background-image: url('https://radiomixfm.com.br/wp-content/uploads/2022/04/bio-alok.jpg')">
+  <div class="image" style="background-image: url('@musica.Uri')">
   </div>
   <div class="controles">
     <span> @musica?.Title </span>
     <div class="botoes">
-     <i class="bi bi-forward-fill" @onclick="@voltarMusica"></i>
-     <i class="bi bi-forward-fill"@onclick="@proximaMusica"></i>
+      <i class="bi bi-fast-forward-fill" style="transform: rotateY(180deg);" @onclick="@voltarMusica"></i>
+      <i class="bi bi-play-fill"></i>
+      <i class="bi bi-fast-forward-fill" @onclick="@proximaMusica"></i>
     </div>
   </div>
 </div>
 
 @code {
-
-
- public Music musica {get;set;}
-
-    
-protected override async Task OnInitializedAsync(){
-    await this.obterMusicaTocando();
+  public Music musica { get; set; } = new Music();
+  Timer timer;
+  protected override async Task OnInitializedAsync()
+  {
+    timer = new Timer(async _ => await PlayerService.obterMusicaAtual(), null, 0, 5000);
+    PlayerService.musicaAtual += obterMusicaTocando; ;
   }
 
-public async Task  obterMusicaTocando(){
-     
+  public void obterMusicaTocando(Music music)
+  {
+    musica = music;
+    Console.WriteLine("aki porra" + music.Uri);
+    StateHasChanged();
+  }
+  public async Task voltarMusica()
+  {
+    // this.playerService.voltarMusica();
+    Console.WriteLine("voltando");
   }
 
-  public async Task  voltarMusica(){
-   // this.playerService.voltarMusica();
-   Console.WriteLine("voltando");
-  }
-
-  public async Task  proximaMusica(){
+  public async Task proximaMusica()
+  {
     //this.playerService.proximaMusica();
-  Console.WriteLine("indo");
+    Console.WriteLine("indo");
   }
-
+  public void Dispose()
+  {
+    PlayerService.musicaAtual -= obterMusicaTocando;
+  }
 
 }

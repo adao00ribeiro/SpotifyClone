@@ -17,17 +17,19 @@
 
 .controles {
   padding: 10px;
-  background-color: var(--black-transparent-70); /* Replace with the actual color variable */
+  background-color: var(--black-transparent-70);
+  /* Replace with the actual color variable */
   flex-grow: 1;
-  color: var(--branco); /* Replace with the actual color variable */
+  color: var(--branco);
+  /* Replace with the actual color variable */
 }
 
- .controles span {
+.controles span {
   font-size: .9rem;
   font-weight: 700;
 }
 
- .botoes {
+.botoes {
   width: 100%;
   height: 100%;
   display: flex;
@@ -35,6 +37,8 @@
   align-items: center;
   font-size: 1.8rem;
 }
+
 .botoes * {
   cursor: pointer;
+
 }
